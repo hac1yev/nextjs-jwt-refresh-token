@@ -16,10 +16,36 @@ export async function middleware(request) {
     const isAuthPageRequested = isAuthPage(nextUrl.pathname);
 
     if(isAuthPageRequested) {
-        if(!accessToken) {
-            const response = NextResponse.next();
-
-            return response;
+        if(!hasVerifiedJwtToken) {
+            if(hasVerifiedRefreshToken) {
+                const { newAccessToken, newRefreshToken } = await getNewAccessToken(refreshToken);
+                const hasVerifiedNewJwtToken = newAccessToken && (await verifyJwtToken(newAccessToken));
+    
+                if(hasVerifiedNewJwtToken) {
+                    const response = NextResponse.redirect(new URL("/", url));
+    
+                    response.cookies.set({
+                        name: 'accessToken',
+                        value: newAccessToken,
+                        path: '/',
+                        httpOnly: true,
+                        secure: true
+                    });
+                    
+                    response.cookies.set({
+                        name: 'refreshToken',
+                        value: newRefreshToken,
+                        path: '/',
+                        httpOnly: true,
+                        secure: true
+                    });
+                    return response;
+                }else{
+                    return NextResponse.next();
+                }
+            }
+    
+            return NextResponse.next();
         }
 
         const response = NextResponse.redirect(new URL("/", url));
