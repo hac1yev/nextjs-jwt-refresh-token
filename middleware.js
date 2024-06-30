@@ -23,22 +23,8 @@ export async function middleware(request) {
     
                 if(hasVerifiedNewJwtToken) {
                     const response = NextResponse.redirect(new URL("/", url));
-    
-                    response.cookies.set({
-                        name: 'accessToken',
-                        value: newAccessToken,
-                        path: '/',
-                        httpOnly: true,
-                        secure: true
-                    });
-                    
-                    response.cookies.set({
-                        name: 'refreshToken',
-                        value: newRefreshToken,
-                        path: '/',
-                        httpOnly: true,
-                        secure: true
-                    });
+                    response.cookies.set({ name: 'accessToken', value: newAccessToken, path: '/', httpOnly: true, secure: true });
+                    response.cookies.set({ name: 'refreshToken', value: newRefreshToken, path: '/', httpOnly: true, secure: true });
                     return response;
                 }else{
                     return NextResponse.next();
@@ -60,22 +46,8 @@ export async function middleware(request) {
 
             if(hasVerifiedNewJwtToken) {
                 const response = NextResponse.next();
-
-                response.cookies.set({
-                    name: 'accessToken',
-                    value: newAccessToken,
-                    path: '/',
-                    httpOnly: true,
-                    secure: true
-                });
-                
-                response.cookies.set({
-                    name: 'refreshToken',
-                    value: newRefreshToken,
-                    path: '/',
-                    httpOnly: true,
-                    secure: true
-                });
+                response.cookies.set({ name: 'accessToken', value: newAccessToken, path: '/', httpOnly: true, secure: true });
+                response.cookies.set({ name: 'refreshToken', value: newRefreshToken, path: '/', httpOnly: true, secure: true });
                 return response;
             }else{
                 return NextResponse.redirect(new URL("/login", url));
@@ -86,8 +58,8 @@ export async function middleware(request) {
     }
 
     return NextResponse.next();
-}
+};
  
 export const config = {
   matcher: ['/login', '/register', '/products'],
-}
+};
