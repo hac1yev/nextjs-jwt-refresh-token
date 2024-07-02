@@ -1,6 +1,36 @@
+"use client";
 
-const FavoritesPage = async () => {
-    const favorites = [];
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+const FavoritesPage = () => {
+    const [accessToken,setAccessToken] = useState("");
+    const [favorites,setFavorites] = useState([]);
+
+    useEffect(() => {
+        const cookie = document.cookie;
+        const arr = cookie.split("=");
+        const token = arr[1];
+
+        setAccessToken(token);
+
+        (async function(){
+            try {
+                const response = await axios.get("/api/favorites", {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    } 
+                });
+
+                if(response?.status === 200) {
+                    setFavorites(response?.data?.favorites);
+                }
+            } catch (error) {
+                
+            }
+        })();
+    }, [accessToken]);
+    
 
     return (
         <>

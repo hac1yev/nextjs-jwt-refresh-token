@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 import { getNewAccessToken, verifyJwtToken, verifyRefreshToken } from './lib/auth';
 
 const AUTH_PAGES = ['/login', '/register'];
@@ -23,7 +23,7 @@ export async function middleware(request) {
     
                 if(hasVerifiedNewJwtToken) {
                     const response = NextResponse.redirect(new URL("/", url));
-                    response.cookies.set({ name: 'accessToken', value: newAccessToken, path: '/', httpOnly: true, secure: true });
+                    response.cookies.set({ name: 'accessToken', value: newAccessToken, path: '/' });
                     response.cookies.set({ name: 'refreshToken', value: newRefreshToken, path: '/', httpOnly: true, secure: true });
                     return response;
                 }else{
@@ -35,7 +35,6 @@ export async function middleware(request) {
         }
 
         const response = NextResponse.redirect(new URL("/", url));
-
         return response;
     }
 
@@ -53,13 +52,11 @@ export async function middleware(request) {
                 return NextResponse.redirect(new URL("/login", url));
             }
         }
-
         return NextResponse.redirect(new URL("/login", url));
     }
-
     return NextResponse.next();
 };
  
 export const config = {
-  matcher: ['/login', '/register', '/products'],
+  matcher: ['/login', '/register'],
 };

@@ -13,7 +13,7 @@ const Form = () => {
         const formData = new FormData(e.currentTarget);
         
         try {
-            const response = await axios.post("/api/register", JSON.stringify({
+            const response = await axios.post("/api/auth/register", JSON.stringify({
                 username: formData.get("username"),
                 password: formData.get("password")
             }));

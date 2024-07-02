@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { connectToDB } from "../../../lib/connect";
-import { User } from "../../../models/user";
-import { verifyRefreshToken } from "../../../lib/auth";
+import { connectToDB } from "../../../../lib/connect";
+import { User } from "../../../../models/user";
+import { verifyRefreshToken } from "../../../../lib/auth";
 import { SignJWT } from "jose";
 
 export async function POST(req) {

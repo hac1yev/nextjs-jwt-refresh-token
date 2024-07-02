@@ -14,7 +14,7 @@ const Form = () => {
         const formData = new FormData(e.currentTarget);
 
         try {
-            const response = await axios.post("/api/login", JSON.stringify({
+            const response = await axios.post("/api/auth/login", JSON.stringify({
                 username: formData.get("username"),
                 password: formData.get("password")
             }));

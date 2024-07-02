@@ -1,5 +1,5 @@
-import { connectToDB } from "../../../lib/connect";
-import { User } from "../../../models/user";
+import { connectToDB } from "../../../../lib/connect";
+import { User } from "../../../../models/user";
 import { NextResponse } from "next/server";
 import { compare } from 'bcrypt';
 import { SignJWT } from "jose";
@@ -48,9 +48,7 @@ export async function POST(req) {
     response.cookies.set({
         name: 'accessToken',
         value: accessToken,
-        path: '/',
-        httpOnly: true,
-        secure: true
+        path: '/'    
     });
 
     response.cookies.set({

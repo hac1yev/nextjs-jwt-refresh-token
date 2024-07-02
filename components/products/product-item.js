@@ -1,13 +1,40 @@
 "use client";
 
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const ProductItem = ({ products }) => {
     const [error, setError] = useState(null);
+    const [accessToken, setAccessToken] = useState("");
+
+    useEffect(() => {
+        const cookie = document.cookie;
+        const arr = cookie.split("=");
+        const token = arr[1];
+
+        setAccessToken(token);
+    }, [accessToken]);
 
     const handleSubmit = async (id, e) => {
         e.preventDefault();
 
+        try {
+            await axios.post(`/api/favorites/add`, JSON.stringify({ id }), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
+
+            const cookie = document.cookie;
+            const arr = cookie.split("=");
+            const token = arr[1];
+
+            setAccessToken(token);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
